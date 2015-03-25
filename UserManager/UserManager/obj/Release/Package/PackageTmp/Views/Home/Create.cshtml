@@ -1,0 +1,152 @@
+﻿<style>
+    
+
+    .content {
+        width: 800px;
+        margin: 0 auto;
+        padding-top: 50px;
+    }
+
+    .ball {
+        background-color: rgba(0,0,0,0);
+        border: 5px solid rgba(0,183,229,0.9);
+        opacity: .9;
+        border-top: 5px solid rgba(0,0,0,0);
+        border-left: 5px solid rgba(0,0,0,0);
+        border-radius: 50px;
+        box-shadow: 0 0 35px #2187e7;
+        width: 50px;
+        height: 50px;
+        margin: 0 auto;
+        -moz-animation: spin .5s infinite linear;
+        -webkit-animation: spin .5s infinite linear;
+    }
+
+    .ball1 {
+        background-color: rgba(0,0,0,0);
+        border: 5px solid rgba(0,183,229,0.9);
+        opacity: .9;
+        border-top: 5px solid rgba(0,0,0,0);
+        border-left: 5px solid rgba(0,0,0,0);
+        border-radius: 50px;
+        box-shadow: 0 0 15px #2187e7;
+        width: 30px;
+        height: 30px;
+        margin: 0 auto;
+        position: relative;
+        top: -40px;
+        -moz-animation: spinoff .5s infinite linear;
+        -webkit-animation: spinoff .5s infinite linear;
+    }
+
+    @@-moz-keyframes spin {
+        0% {
+            -moz-transform: rotate(0deg);
+        }
+
+        100% {
+            -moz-transform: rotate(360deg);
+        }
+
+        ;
+    }
+
+    @@-moz-keyframes spinoff {
+        0% {
+            -moz-transform: rotate(0deg);
+        }
+
+        100% {
+            -moz-transform: rotate(-360deg);
+        }
+
+        ;
+    }
+
+    @@-webkit-keyframes spin {
+        0% {
+            -webkit-transform: rotate(0deg);
+        }
+
+        100% {
+            -webkit-transform: rotate(360deg);
+        }
+
+        ;
+    }
+
+    @@-webkit-keyframes spinoff {
+        0% {
+            -webkit-transform: rotate(0deg);
+        }
+
+        100% {
+            -webkit-transform: rotate(-360deg);
+        }
+
+        ;
+    }
+</style>
+
+<h2>Create</h2>
+
+<form name="appInfo" id="appInfo">
+    <label for="Name">Name:</label>
+    <input type="text" id="Name" name="Name" placeholder="" />
+    <br />
+
+    <label for="Email">Email:</label>
+    <input type="email" id="Email" name="Email" placeholder="xxxx@xxxx.com" />
+    <br />
+
+    <label for="Password">Password:</label>
+    <input type="text" id="Password" name="Password" placeholder="0.0.0.1" />
+    <br />
+
+    
+
+    <input type="button" id="btnUploadAppInfo" value="Upload info" />
+</form>
+
+@section scripts{
+    <script type="text/javascript">
+    $(document).ready(function () {
+        $("#loader").hide();
+        var idApp = null;
+
+        $("#btnUploadAppInfo").click(function () {
+            $("#loader").show();
+
+            var params = $("#appInfo").serialize();
+
+            $("#Name").attr("disabled", true);
+            $("#Email").attr("disabled", true);
+            $("#Password").attr("disabled", true);
+            $("#btnUploadAppInfo").attr("disabled", true);
+
+            var xmlhttp = new XMLHttpRequest();
+            var url = 'http://octousers.azurewebsites.net/api/User';
+
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                    idApp = parseInt(xmlhttp.responseText);
+                    console.log(idApp);
+                    alert('App information is uploaded');
+                    $("#loader").hide();
+                }
+
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 400) {
+                    // Log
+                }
+            }
+
+            xmlhttp.open("POST", url, true);
+
+            xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xmlhttp.send(params);
+        });
+
+    });
+    </script>
+
+}
